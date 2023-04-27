@@ -7,7 +7,7 @@ namespace PrismCat
         enum colourIndex { A, B, C, D, E, F, G, H, I, J };
 
         [SerializeField] colourIndex colour = colourIndex.A;
-        //PrismCat::CAT_ColourManager colourManager;
+        PrismCat::CAT_ColourManager colourManager;
 
         void Start()
         {
