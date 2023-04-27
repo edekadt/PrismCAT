@@ -11,8 +11,8 @@ namespace PrismCAT
 
         void Start()
         {
-            //colourManager = CAT_ColourManager.instance();
-            //colourManager.addComponent(this);
+            colourManager = CAT_ColourManager.Instance;
+            colourManager.addObject(this);
         }
 
         // Called when a variable changes on the inspector
