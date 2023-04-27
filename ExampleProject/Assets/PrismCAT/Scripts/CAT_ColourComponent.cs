@@ -1,13 +1,13 @@
 using UnityEngine;
 
-namespace PrismCat
+namespace PrismCAT
 {
     public class CAT_ColourComponent : MonoBehaviour
     {
         enum colourIndex { A, B, C, D, E, F, G, H, I, J };
 
         [SerializeField] colourIndex colour = colourIndex.A;
-        PrismCat::CAT_ColourManager colourManager;
+        CAT_ColourManager colourManager;
 
         void Start()
         {
