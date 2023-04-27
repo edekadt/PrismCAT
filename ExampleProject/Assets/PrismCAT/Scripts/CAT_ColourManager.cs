@@ -6,6 +6,8 @@ namespace PrismCAT
 {
     public class CAT_ColourManager : MonoBehaviour
     {
+        [SerializeField] int SIZE = 10; // Number of colours supported.
+
         enum Palettes { Default, Propanopia, Deuteranopia, Tritanopia };
 
         [Tooltip("Palette of up to 10 colours that PrismCAT will replace if colourblind settings are enabled.\n " +
@@ -46,12 +48,26 @@ namespace PrismCAT
         /// The order of these colours will be recalculated at the start of the program to best match the similarities and
         /// differences between the base colours.
         /// </summary>
-        Color[][] AltPalettes;
+        Color[,] AltPalettes;
+
+        /// <summary>
+        /// A graph for each palette, that represents how different two colours from the same palette are. 
+        /// Each graph is shaped SIZExSIZE, and has zeros on the main diagonal.
+        /// </summary>
+        float[,] CustomColorGraph;
+        float[,] PropanopiaColorGraph;
+        float[,] DeuteranopiaColorGraph;
+        float[,] TritanopiaColorGraph;
 
         /// <summary>
         /// List of objects with CAT_ColourComponents that need to be recoloured when settings are changed
         /// </summary>
         List<CAT_ColourComponent> ManagedObjects;
+
+        float ColourDifference(Color a, Color b)
+        {
+            return 0.3f * Mathf.Pow(a.r - b.r, 2) + 0.59f * Mathf.Pow(a.g - b.g, 2) + 0.11f * Mathf.Pow(a.b - b.b, 2);
+        }
 
         /// <summary>
         /// Given a list of colours via CustomPalette, this function calculates the relative similarity between each pair of colours,
@@ -59,7 +75,16 @@ namespace PrismCAT
         /// </summary>
         void GenerateColourGraph()
         {
-
+            CustomColorGraph = new float[SIZE, SIZE];
+            for(int i = 0; i < SIZE; i++)
+            {
+                for(int j = 0; j < SIZE; j++)
+                {
+                    float dif =ColourDifference(CustomPalette[i], CustomPalette[j]);
+                    CustomColorGraph[i, j] = dif;
+                    CustomColorGraph[j, i] = dif;
+                }
+            }
         }
 
         /// <summary>
