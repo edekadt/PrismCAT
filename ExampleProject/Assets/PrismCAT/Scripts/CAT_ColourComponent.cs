@@ -4,15 +4,17 @@ namespace PrismCAT
 {
     public class CAT_ColourComponent : MonoBehaviour
     {
-        enum colourIndex { A, B, C, D, E, F, G, H, I, J };
+        enum ColourIndex { A, B, C, D, E, F, G, H, I, J };
 
-        [SerializeField] colourIndex colour = colourIndex.A;
+        [SerializeField] ColourIndex colour = ColourIndex.A;
         CAT_ColourManager colourManager;
 
         void Start()
         {
             colourManager = CAT_ColourManager.Instance;
             colourManager.addObject(this);
+            
+                Debug.LogError("CAT_ColourComponent added to object with no compatible components to change colour of.");
         }
 
         // Called when a variable changes on the inspector
@@ -22,9 +24,22 @@ namespace PrismCAT
             //gameObject.GetComponent<MeshRenderer>().material.color = colourManager.GetColour((int)colour);
         }
 
-        public void UpdateColour(int c)
+        private void OnDestroy()
         {
-            //gameObject.GetComponent<MeshRenderer>().material.color = colourManager.GetColour((int)colour);
+            colourManager.removeObject(this);
         }
+
+        public void setColour(int c)
+        {
+            colour = (ColourIndex)c;
+            UpdateColour();
+        }
+
+        public void UpdateColour()
+        {
+            renderer.material.color = colourManager.GetColour((int)colour);
+        }
+
+
     }
 }
