@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace PrismCAT
 {
@@ -13,8 +14,6 @@ namespace PrismCAT
         {
             colourManager = CAT_ColourManager.Instance;
             colourManager.addObject(this);
-            
-                Debug.LogError("CAT_ColourComponent added to object with no compatible components to change colour of.");
         }
 
         // Called when a variable changes on the inspector
@@ -37,9 +36,6 @@ namespace PrismCAT
 
         public void UpdateColour()
         {
-            renderer.material.color = colourManager.GetColour((int)colour);
         }
-
-
     }
 }
