@@ -6,7 +6,7 @@ namespace PrismCAT
 {
     public class CAT_ColourManager : MonoBehaviour
     {
-        public enum Palette { Default, Propanopia, Deuteranopia, Tritanopia };
+        public enum Palette { Default, Protanopia, Deuteranopia, Tritanopia };
 
         #region attributes
 
@@ -49,10 +49,6 @@ namespace PrismCAT
         {
             int size = managedObjects.Count;
             managedObjects.Add(obj);
-            if (managedObjects.Count > size)
-                Debug.Log("Object added successfully");
-            else
-                Debug.Log("Error adding object");
         }
 
         public void removeObject(CAT_ColourComponent obj)
@@ -65,7 +61,29 @@ namespace PrismCAT
         /// </summary>
         public Color GetColour(int index)
         {
-            return Color.black;
+            Color colour;
+            switch (currentPalette)
+            {
+                case Palette.Default:
+                    colour = Color.white;
+                    break;
+                case Palette.Protanopia:
+                    colour = Color.red;
+                    break;
+                case Palette.Deuteranopia:
+                    colour = Color.green;
+                    break;
+                case Palette.Tritanopia:
+                    colour = Color.blue;
+                    break;
+                default:
+                    colour = Color.black;
+                    break;
+            }
+            colour.r *= index / 10f;
+            colour.g *= index / 10f;
+            colour.b *= index / 10f;
+            return colour;
         }
 
         public static CAT_ColourManager Instance { get; private set; }

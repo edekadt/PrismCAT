@@ -6,7 +6,7 @@ namespace PrismCAT
     public class CAT_Image : CAT_ColourComponent
     {
         [SerializeField] ColourIndex colour = ColourIndex.A;
-        [SerializeField] float colourTransparency;
+        //[SerializeField] float colourTransparency;
 
         private Image image;
 
