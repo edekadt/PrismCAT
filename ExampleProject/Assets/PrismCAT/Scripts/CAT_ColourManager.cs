@@ -39,7 +39,7 @@ namespace PrismCAT
         /// <summary>
         /// List of objects with CAT_ColourComponents that need to be recoloured when settings are changed
         /// </summary>
-        List<CAT_ColourComponent> ManagedObjects;
+        List<CAT_ColourComponent> managedObjects;
 
         #endregion
 
@@ -47,9 +47,9 @@ namespace PrismCAT
 
         public void addObject(CAT_ColourComponent obj)
         {
-            int size = ManagedObjects.Count;
-            ManagedObjects.Add(obj);
-            if (ManagedObjects.Count > size)
+            int size = managedObjects.Count;
+            managedObjects.Add(obj);
+            if (managedObjects.Count > size)
                 Debug.Log("Object added successfully");
             else
                 Debug.Log("Error adding object");
@@ -57,7 +57,7 @@ namespace PrismCAT
 
         public void removeObject(CAT_ColourComponent obj)
         {
-            ManagedObjects.Remove(obj);
+            managedObjects.Remove(obj);
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace PrismCAT
 
         private void updateObjects()
         {
-            foreach(CAT_ColourComponent obj in ManagedObjects)
+            foreach(CAT_ColourComponent obj in managedObjects)
             {
                 obj.UpdateColour();
             }
@@ -126,7 +126,7 @@ namespace PrismCAT
                 Instance = this;
                 Debug.Log("Singleton instantiated");
             }
-            ManagedObjects = new List<CAT_ColourComponent>();
+            managedObjects = new List<CAT_ColourComponent>();
         }
 
         /// <summary>
@@ -134,7 +134,10 @@ namespace PrismCAT
         /// </summary>
         void Start()
         {
-
+            foreach(CAT_ColourComponent obj in managedObjects)
+            {
+                obj.UpdateColour();
+            }
         }
 
         private void Update()
