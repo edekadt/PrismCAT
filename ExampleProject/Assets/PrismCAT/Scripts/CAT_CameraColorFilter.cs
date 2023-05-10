@@ -5,12 +5,15 @@ using UnityEngine;
 public enum ColorBlind
 {
     Normal = 0,
-    Protanopia = 1
+    Protanopia = 1,
+    Deuteranopia = 2,
+    Tritanopia = 3
 }
 
 public class CAT_CameraColorFilter : MonoBehaviour
 {
     private Material material;
+    private ColorBlind previousColor;
 
     [SerializeField] ColorBlind colorBlind; 
 
@@ -28,7 +31,21 @@ public class CAT_CameraColorFilter : MonoBehaviour
             new Color(0.56f, 0.44f, 0.0f), 
             new Color(0.56f, 0.44f, 0.0f), 
             new Color(0.0f, 0.24f, 0.76f) 
-        }    
+        },
+
+        // Deuteranopia
+        {
+            new Color(0.625f, 0.375f, 0.0f),
+            new Color(0.7f, 0.3f, 0.0f),
+            new Color(0.0f, 0.3f, 0.7f)
+        },
+
+        // Tritanopia
+        {
+            new Color(0.95f, 0.05f, 0.0f),
+            new Color(0.0f, 0.43f, 0.57f),
+            new Color(0.0f, 0.475f, 0.525f),
+        }
     };
     void Awake()
     {
@@ -40,16 +57,18 @@ public class CAT_CameraColorFilter : MonoBehaviour
 
     private void OnRenderImage(RenderTexture source, RenderTexture destination)
     {
-        if (colorBlind == ColorBlind.Normal)
+        if (colorBlind == ColorBlind.Normal) {
             Graphics.Blit(source, destination);
-
-        else if (colorBlind == ColorBlind.Protanopia)
+            return;
+        } else if (colorBlind != previousColor)
         {
-            material.SetColor("_R", RGB[1, 0]);
-            material.SetColor("_G", RGB[1, 1]);
-            material.SetColor("_B", RGB[1, 2]);
-
-            Graphics.Blit(source, destination, material);
+            int color = (int)colorBlind;
+            material.SetColor("_R", RGB[color, 0]);
+            material.SetColor("_G", RGB[color, 1]);
+            material.SetColor("_B", RGB[color, 2]);
+            previousColor = colorBlind;
         }
+        
+        Graphics.Blit(source, destination, material);
     }
 }
