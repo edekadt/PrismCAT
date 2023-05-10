@@ -2,11 +2,20 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 namespace PrismCAT
 {
+
     public class CAT_ColourManager : MonoBehaviour
     {
+        [System.Serializable]
+        public class ColorData
+        {
+            public String[] Protanopia;
+            public String[] Deuteranopia;
+            public String[] Tritanopia;
+        }
         public enum Palette { Default, Protanopia, Deuteranopia, Tritanopia };
 
         #region attributes
@@ -141,7 +150,7 @@ namespace PrismCAT
                 CustomPalette.Length != DeuteranopiaPalette.Length ||
                 CustomPalette.Length != TritanopiaPalette.Length)
                 Debug.LogError("Warning: All colour palettes must contain the same number of elements.");
-
+            ReadFromJsonFile();
             ReorderAltPalettes();
         }
 
@@ -164,7 +173,25 @@ namespace PrismCAT
                 updateObjects();
             }
         }
-
+        private void ReadFromJsonFile()
+        {
+            string rutaArchivo = Application.dataPath + "/PrismCAT/Json/ColorPallete.json";
+            string json = File.ReadAllText(rutaArchivo);
+            ColorData colordata = JsonUtility.FromJson<ColorData>(json);
+            for(int i = 0; i < colordata.Protanopia.Length; i++)
+            {
+                ProtanopiaPalette[i] = ColorUtility.TryParseHtmlString(colordata.Protanopia[i], out Color parsedColor) ? parsedColor : Color.white;
+            }
+            for (int i = 0; i < colordata.Deuteranopia.Length; i++)
+            {
+                DeuteranopiaPalette[i] = ColorUtility.TryParseHtmlString(colordata.Deuteranopia[i], out Color parsedColor) ? parsedColor : Color.white;
+            }
+            for (int i = 0; i < colordata.Tritanopia.Length; i++)
+            {
+                TritanopiaPalette[i] = ColorUtility.TryParseHtmlString(colordata.Tritanopia[i], out Color parsedColor) ? parsedColor : Color.white;
+            }
+            //Color colorA = ColorUtility.TryParseHtmlString(prota.A, out Color parsedColor) ? parsedColor : Color.white;
+        }
         #endregion
     }
 
