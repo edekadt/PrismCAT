@@ -20,7 +20,7 @@ namespace PrismCAT
 
         #region attributes
 
-        [SerializeField] int SIZE = 10; // Number of colours supported.
+        [SerializeField, Range(1, 10)] int SIZE = 10; // Number of colours supported.
 
         [Tooltip("Palette of up to 10 colours that PrismCAT will replace if colourblind settings are enabled.\n" +
             "These colours can be assigned to any GameObject with a CAT_ColourComponent. Note that the ColourComponent" +
