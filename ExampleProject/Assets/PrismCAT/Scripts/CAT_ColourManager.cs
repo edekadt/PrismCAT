@@ -16,6 +16,9 @@ namespace PrismCAT
             "These colours can be assigned to any GameObject with a CAT_ColourComponent. Note that the ColourComponent" +
             "will overwrite any other materials present on the object.")]
         [SerializeField] public Color[] CustomPalette;
+        [SerializeField] public Color[] ProtanopiaPalette;
+        [SerializeField] public Color[] DeuteranopiaPalette;
+        [SerializeField] public Color[] TritanopiaPalette;
         public Palette currentPalette;
 
         /// <summary>
@@ -65,24 +68,25 @@ namespace PrismCAT
             switch (currentPalette)
             {
                 case Palette.Default:
-                    colour = Color.white;
+                    colour = CustomPalette[index];
                     break;
                 case Palette.Protanopia:
-                    colour = Color.red;
+                    colour = ProtanopiaPalette[index];
                     break;
                 case Palette.Deuteranopia:
-                    colour = Color.green;
+                    colour = DeuteranopiaPalette[index];
                     break;
                 case Palette.Tritanopia:
-                    colour = Color.blue;
+                    colour = TritanopiaPalette[index];
                     break;
                 default:
+                    Debug.LogError("Unknown colour palette active.");
                     colour = Color.black;
                     break;
             }
-            colour.r *= index / 10f;
-            colour.g *= index / 10f;
-            colour.b *= index / 10f;
+            //colour.r *= index / 10f;
+            //colour.g *= index / 10f;
+            //colour.b *= index / 10f;
             return colour;
         }
 
@@ -136,15 +140,18 @@ namespace PrismCAT
         {
             if (Instance != null && Instance != this)
             {
-                Debug.Log("Singleton already exists");
+                Debug.Log("Warning: Multiple CAT_ColourManager instances detected.");
                 Destroy(this);
             }
             else
             {
                 Instance = this;
-                Debug.Log("Singleton instantiated");
             }
             managedObjects = new List<CAT_ColourComponent>();
+            if (CustomPalette.Length != ProtanopiaPalette.Length ||
+                CustomPalette.Length != DeuteranopiaPalette.Length ||
+                CustomPalette.Length != TritanopiaPalette.Length)
+                Debug.LogError("Warning: All colour palettes must contain the same number of elements.");
         }
 
         /// <summary>
@@ -162,11 +169,10 @@ namespace PrismCAT
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                currentPalette = (Palette)((int)(currentPalette + 1) % 4);
+                currentPalette = (Palette)((int)(currentPalette + 1) % 2);
                 updateObjects();
             }
         }
-
 
         #endregion
     }
