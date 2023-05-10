@@ -1469,7 +1469,7 @@ MonoBehaviour:
   - {r: 0, g: 0, b: 0, a: 0}
   - {r: 0, g: 0, b: 0, a: 0}
   - {r: 0, g: 0, b: 0, a: 0}
-  currentPalette: 0
+  currentPalette: 3
 --- !u!4 &823377080
 Transform:
   m_ObjectHideFlags: 0
