@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,17 +28,6 @@ namespace PrismCAT
         /// differences between the base colours.
         /// </summary>
         Color[,] AltPalettes;
-
-        /// <summary>
-        /// A graph for each palette, that represents how different two colours from the same palette are. 
-        /// Each graph is shaped SIZExSIZE, and has zeros on the main diagonal.
-        /// 
-        /// These graphs are only used for calculating the order of the palettes
-        /// </summary>
-        float[,] CustomColorGraph;
-        float[,] PropanopiaColorGraph;
-        float[,] DeuteranopiaColorGraph;
-        float[,] TritanopiaColorGraph;
 
         /// <summary>
         /// List of objects with CAT_ColourComponents that need to be recoloured when settings are changed
@@ -102,30 +92,29 @@ namespace PrismCAT
         }
 
         /// <summary>
-        /// Given a list of colours via CustomPalette, this function calculates the relative similarity between each pair of colours,
-        /// storing this information in a graph.
-        /// </summary>
-        void GenerateColourGraph()
-        {
-            CustomColorGraph = new float[SIZE, SIZE];
-            for(int i = 0; i < SIZE; i++)
-            {
-                for(int j = 0; j < SIZE; j++)
-                {
-                    float dif =ColourDifference(CustomPalette[i], CustomPalette[j]);
-                    CustomColorGraph[i, j] = dif;
-                    CustomColorGraph[j, i] = dif;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Given the graphs produced by GenerateColourGraph, this function reorders the colours in each of the alternate palettes
-        /// to best match the similarites and differences of the custom palette.
+        /// This function reorders the colours in each of the alternate palettes to best match the custom palette in terms of brightness.
         /// </summary>
         void ReorderAltPalettes()
         {
+            // Sort the CustomPalette by brightness
+            Color[] orderedPalette = (Color[])CustomPalette.Clone();
+            Array.Sort(orderedPalette, new BrightnessComparer());
 
+            // Apply those changes to the other palettes
+            //Color[,] reorderedPalettes = new Color[3, SIZE];
+            Color[] test = (Color[])ProtanopiaPalette.Clone(); // <-- Esto desaparecerá para añadir la línea de arriba
+
+            for (int i = 0; i < SIZE; i++)
+            {
+                int pos = Array.IndexOf(CustomPalette, orderedPalette[i]);
+                //for(int j = 0; j < 3; j++)
+                //    reorderedPalettes[j, i] = AltPalettes[j, pos];
+                test[i] = ProtanopiaPalette[pos]; // <-- Esto desaparecerá para añadir las 2 líneas de arriba
+            }
+
+            //AltPalettes = reorderedPalettes;
+            ProtanopiaPalette = test; // <-- Esto desaparecerá para añadir la línea de arriba
+            CustomPalette = orderedPalette; // <-- Esto desaparecerá. Es para ver cómo queda la default ordenada
         }
 
         private void updateObjects()
@@ -152,6 +141,8 @@ namespace PrismCAT
                 CustomPalette.Length != DeuteranopiaPalette.Length ||
                 CustomPalette.Length != TritanopiaPalette.Length)
                 Debug.LogError("Warning: All colour palettes must contain the same number of elements.");
+
+            ReorderAltPalettes();
         }
 
         /// <summary>
@@ -175,5 +166,15 @@ namespace PrismCAT
         }
 
         #endregion
+    }
+
+    public class BrightnessComparer : IComparer<Color>
+    {
+        public int Compare(Color x, Color y)
+        {
+            if (x.grayscale < y.grayscale) return 1;
+            else if (x.grayscale > y.grayscale) return -1;
+            else return 0;
+        }
     }
 }
