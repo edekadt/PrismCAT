@@ -70,13 +70,13 @@ namespace PrismCAT
                     colour = CustomPalette[index];
                     break;
                 case Palette.Protanopia:
-                    colour = ProtanopiaPalette[index];
+                    colour = AltPalettes[0, index];
                     break;
                 case Palette.Deuteranopia:
-                    colour = DeuteranopiaPalette[index];
+                    colour = AltPalettes[1, index];
                     break;
                 case Palette.Tritanopia:
-                    colour = TritanopiaPalette[index];
+                    colour = AltPalettes[2, index];
                     break;
                 default:
                     Debug.LogError("Unknown colour palette active.");
@@ -150,6 +150,7 @@ namespace PrismCAT
                 CustomPalette.Length != DeuteranopiaPalette.Length ||
                 CustomPalette.Length != TritanopiaPalette.Length)
                 Debug.LogError("Warning: All colour palettes must contain the same number of elements.");
+            AltPalettes = new Color[3, SIZE];
             ReadFromJsonFile();
             ReorderAltPalettes();
         }
@@ -180,15 +181,18 @@ namespace PrismCAT
             ColorData colordata = JsonUtility.FromJson<ColorData>(json);
             for(int i = 0; i < colordata.Protanopia.Length; i++)
             {
-                ProtanopiaPalette[i] = ColorUtility.TryParseHtmlString(colordata.Protanopia[i], out Color parsedColor) ? parsedColor : Color.white;
+                AltPalettes[0,i] = ColorUtility.TryParseHtmlString(colordata.Protanopia[i], out Color parsedColor) ? parsedColor : Color.white;
+                //ProtanopiaPalette[i] = ColorUtility.TryParseHtmlString(colordata.Protanopia[i], out Color parsedColor) ? parsedColor : Color.white;
             }
             for (int i = 0; i < colordata.Deuteranopia.Length; i++)
             {
-                DeuteranopiaPalette[i] = ColorUtility.TryParseHtmlString(colordata.Deuteranopia[i], out Color parsedColor) ? parsedColor : Color.white;
+                AltPalettes[1, i] = ColorUtility.TryParseHtmlString(colordata.Deuteranopia[i], out Color parsedColor) ? parsedColor : Color.white;
+                //DeuteranopiaPalette[i] = ColorUtility.TryParseHtmlString(colordata.Deuteranopia[i], out Color parsedColor) ? parsedColor : Color.white;
             }
             for (int i = 0; i < colordata.Tritanopia.Length; i++)
             {
-                TritanopiaPalette[i] = ColorUtility.TryParseHtmlString(colordata.Tritanopia[i], out Color parsedColor) ? parsedColor : Color.white;
+                AltPalettes[2, i] = ColorUtility.TryParseHtmlString(colordata.Tritanopia[i], out Color parsedColor) ? parsedColor : Color.white;
+                //TritanopiaPalette[i] = ColorUtility.TryParseHtmlString(colordata.Tritanopia[i], out Color parsedColor) ? parsedColor : Color.white;
             }
             //Color colorA = ColorUtility.TryParseHtmlString(prota.A, out Color parsedColor) ? parsedColor : Color.white;
         }
