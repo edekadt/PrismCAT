@@ -36,9 +36,6 @@ namespace PrismCAT
             "These colours can be assigned to any GameObject with a CAT_ColourComponent. Note that the ColourComponent" +
             " will overwrite any other materials present on the object.")]
         [SerializeField] public Color[] CustomPalette;
-        [SerializeField] public Color[] ProtanopiaPalette;
-        [SerializeField] public Color[] DeuteranopiaPalette;
-        [SerializeField] public Color[] TritanopiaPalette;
 
         /// <summary>
         /// A set of three alternate palettes that PrismCAT will use to replace the colours in CustomPalette.
@@ -119,20 +116,16 @@ namespace PrismCAT
             Array.Sort(orderedPalette, new BrightnessComparer());
 
             // Apply those changes to the other palettes
-            //Color[,] reorderedPalettes = new Color[3, SIZE];
-            Color[] test = (Color[])ProtanopiaPalette.Clone(); // <-- Esto desaparecerá para añadir la línea de arriba
+            Color[,] reorderedPalettes = new Color[3, SIZE];
 
             for (int i = 0; i < SIZE; i++)
             {
                 int pos = Array.IndexOf(CustomPalette, orderedPalette[i]);
-                //for(int j = 0; j < 3; j++)
-                //    reorderedPalettes[j, i] = AltPalettes[j, pos];
-                test[i] = ProtanopiaPalette[pos]; // <-- Esto desaparecerá para añadir las 2 líneas de arriba
+                for (int j = 0; j < 3; j++)
+                    reorderedPalettes[j, pos] = AltPalettes[j, i];
             }
 
-            //AltPalettes = reorderedPalettes;
-            ProtanopiaPalette = test; // <-- Esto desaparecerá para añadir la línea de arriba
-            CustomPalette = orderedPalette; // <-- Esto desaparecerá. Es para ver cómo queda la default ordenada
+            AltPalettes = reorderedPalettes;
         }
 
         private void updateObjects()
@@ -155,10 +148,6 @@ namespace PrismCAT
                 Instance = this;
             }
             managedObjects = new List<CAT_ColourComponent>();
-            if (CustomPalette.Length != ProtanopiaPalette.Length ||
-                CustomPalette.Length != DeuteranopiaPalette.Length ||
-                CustomPalette.Length != TritanopiaPalette.Length)
-                Debug.LogError("Warning: All colour palettes must contain the same number of elements.");
             AltPalettes = new Color[3, SIZE];
             ReadFromJsonFile();
             ReorderAltPalettes();
