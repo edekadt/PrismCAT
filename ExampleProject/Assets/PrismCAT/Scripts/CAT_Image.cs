@@ -22,8 +22,6 @@ namespace PrismCAT
 
         private void OnValidate()
         {
-            Debug.Log("Nuevo index: " + (int)colour + "\n");
-            //gameObject.GetComponent<MeshRenderer>().material.color = colourManager.GetColour((int)colour);
         }
 
         private void OnDestroy()
@@ -59,17 +57,8 @@ namespace PrismCAT
             serializedObject.Update();
             EditorGUILayout.PropertyField(colour);
             serializedObject.ApplyModifiedProperties();
-            if (colour.intValue < 2)
-            {
-                EditorGUILayout.LabelField("(Low value)");
-            }
-            if (colour.intValue > 7)
-            {
-                EditorGUILayout.LabelField("(High value)");
-            }
+
             EditorGUILayout.ColorField(LoadCustomPalette()[colour.intValue]);
-            //ReadFromJsonFile();
-            //LoadCustomPalette();
         }
     }
 }

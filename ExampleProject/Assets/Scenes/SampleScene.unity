@@ -1424,6 +1424,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1535673c93d72674a9ac3b21e315bb98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debug: 0
   SIZE: 10
   CustomPalette:
   - {r: 0, g: 0, b: 0, a: 1}
@@ -2324,7 +2325,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7db51a93602defe42be10f3bcfb2b43b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colour: 0
+  colour: 6
 --- !u!1001 &1413255219
 PrefabInstance:
   m_ObjectHideFlags: 0

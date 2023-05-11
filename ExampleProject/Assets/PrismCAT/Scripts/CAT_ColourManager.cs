@@ -16,9 +16,17 @@ namespace PrismCAT
             public String[] Deuteranopia;
             public String[] Tritanopia;
         }
+
+        [System.Serializable]
+        public class PaletteData
+        {
+            public string[] Custom;
+        }
+
         public enum Palette { Default, Protanopia, Deuteranopia, Tritanopia };
 
         #region attributes
+        [SerializeField] bool debug = false;
 
         [SerializeField, Range(1, 10)] int SIZE = 10; // Number of colours supported.
 
@@ -168,15 +176,34 @@ namespace PrismCAT
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (debug && Input.GetKeyDown(KeyCode.P))
             {
                 currentPalette = (Palette)((int)(currentPalette + 1) % 2);
                 updateObjects();
             }
         }
+
+        /// <summary>
+        /// Writes any changes in the palette's colours to CustomPalette.json
+        /// </summary>
+        private void OnValidate()
+        {
+            string path = Application.dataPath + "/PrismCAT/Json/CustomPalette.json";
+            PaletteData customPaletteData = new PaletteData();
+            customPaletteData.Custom = new string[10];
+            int i = 0;
+            foreach (Color c in CustomPalette)
+            {
+                string hex = ColorUtility.ToHtmlStringRGB(c);
+                customPaletteData.Custom[i] = "#" + hex;
+                ++i;
+            }
+            File.WriteAllText(path, JsonUtility.ToJson(customPaletteData, true));
+        }
+
         private void ReadFromJsonFile()
         {
-            string rutaArchivo = Application.dataPath + "/PrismCAT/Json/ColourPalette.json";
+            string rutaArchivo = Application.dataPath + "/PrismCAT/Json/AltPalettes.json";
             string json = File.ReadAllText(rutaArchivo);
             ColorData colordata = JsonUtility.FromJson<ColorData>(json);
             for(int i = 0; i < colordata.Protanopia.Length; i++)
