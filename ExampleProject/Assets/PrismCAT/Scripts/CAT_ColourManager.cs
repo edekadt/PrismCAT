@@ -29,6 +29,8 @@ namespace PrismCAT
         [SerializeField] bool debug = false;
 
         [SerializeField, Range(1, 10)] int SIZE = 10; // Number of colours supported.
+        [SerializeField, Range(1, 4)] int numberOfPalettes;
+        public Palette currentPalette;
 
         [Tooltip("Palette of up to 10 colours that PrismCAT will replace if colourblind settings are enabled.\n" +
             "These colours can be assigned to any GameObject with a CAT_ColourComponent. Note that the ColourComponent" +
@@ -37,7 +39,6 @@ namespace PrismCAT
         [SerializeField] public Color[] ProtanopiaPalette;
         [SerializeField] public Color[] DeuteranopiaPalette;
         [SerializeField] public Color[] TritanopiaPalette;
-        public Palette currentPalette;
 
         /// <summary>
         /// A set of three alternate palettes that PrismCAT will use to replace the colours in CustomPalette.
@@ -178,7 +179,7 @@ namespace PrismCAT
         {
             if (debug && Input.GetKeyDown(KeyCode.P))
             {
-                currentPalette = (Palette)((int)(currentPalette + 1) % 2);
+                currentPalette = (Palette)((int)(currentPalette + 1) % numberOfPalettes);
                 updateObjects();
             }
         }
