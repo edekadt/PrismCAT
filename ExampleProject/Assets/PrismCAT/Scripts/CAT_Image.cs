@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEditor;
 
 namespace PrismCAT
 {
@@ -39,6 +40,36 @@ namespace PrismCAT
         public override void UpdateColour()
         {
             image.color = colourManager.GetColour((int)colour);
+        }
+    }
+
+    [CustomEditor(typeof(CAT_Image))]
+    [CanEditMultipleObjects]
+    public class CAT_Image_Editor : CAT_ColourComponentEditor
+    {
+        SerializedProperty colour;
+
+        void OnEnable()
+        {
+            colour = serializedObject.FindProperty("colour");
+        }
+
+        public override void OnInspectorGUI()
+        {
+            serializedObject.Update();
+            EditorGUILayout.PropertyField(colour);
+            serializedObject.ApplyModifiedProperties();
+            if (colour.intValue < 2)
+            {
+                EditorGUILayout.LabelField("(Low value)");
+            }
+            if (colour.intValue > 7)
+            {
+                EditorGUILayout.LabelField("(High value)");
+            }
+            EditorGUILayout.ColorField(LoadCustomPalette()[colour.intValue]);
+            //ReadFromJsonFile();
+            //LoadCustomPalette();
         }
     }
 }

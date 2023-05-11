@@ -24,7 +24,7 @@ namespace PrismCAT
 
         [Tooltip("Palette of up to 10 colours that PrismCAT will replace if colourblind settings are enabled.\n" +
             "These colours can be assigned to any GameObject with a CAT_ColourComponent. Note that the ColourComponent" +
-            "will overwrite any other materials present on the object.")]
+            " will overwrite any other materials present on the object.")]
         [SerializeField] public Color[] CustomPalette;
         [SerializeField] public Color[] ProtanopiaPalette;
         [SerializeField] public Color[] DeuteranopiaPalette;
@@ -176,7 +176,7 @@ namespace PrismCAT
         }
         private void ReadFromJsonFile()
         {
-            string rutaArchivo = Application.dataPath + "/PrismCAT/Json/ColorPallete.json";
+            string rutaArchivo = Application.dataPath + "/PrismCAT/Json/ColourPalette.json";
             string json = File.ReadAllText(rutaArchivo);
             ColorData colordata = JsonUtility.FromJson<ColorData>(json);
             for(int i = 0; i < colordata.Protanopia.Length; i++)
