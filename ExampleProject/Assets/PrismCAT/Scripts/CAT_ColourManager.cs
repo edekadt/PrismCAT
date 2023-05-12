@@ -180,8 +180,6 @@ namespace PrismCAT
             }
             File.WriteAllText(path, JsonUtility.ToJson(customPaletteData, true));
 
-            updateObjects();
-
             if(lastSize != SIZE)
             {
                 lastSize = SIZE;
@@ -191,6 +189,8 @@ namespace PrismCAT
                     comp.OnValidateSize(SIZE);
                 }
             }
+
+            updateObjects();
         }
 
         private void LoadPalettes()
