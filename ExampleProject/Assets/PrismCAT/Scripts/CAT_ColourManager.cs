@@ -45,6 +45,12 @@ namespace PrismCAT
         Color[,] AltPalettes;
 
         /// <summary>
+        /// The colours read from the json file to set the AltPalettes array. The size of this array will be 10 colours per 
+        /// palette while the size of AltPalettes may be smaller.
+        /// </summary>
+        Color[,] JsonPalettes;
+
+        /// <summary>
         /// List of objects with CAT_ColourComponents that need to be recoloured when settings are changed
         /// </summary>
         List<CAT_ColourComponent> managedObjects;
@@ -101,33 +107,6 @@ namespace PrismCAT
 
         #region private functions
 
-        float ColourDifference(Color a, Color b)
-        {
-            return 0.3f * Mathf.Pow(a.r - b.r, 2) + 0.59f * Mathf.Pow(a.g - b.g, 2) + 0.11f * Mathf.Pow(a.b - b.b, 2);
-        }
-
-        /// <summary>
-        /// This function reorders the colours in each of the alternate palettes to best match the custom palette in terms of brightness.
-        /// </summary>
-        void ReorderAltPalettes()
-        {
-            // Sort the CustomPalette by brightness
-            Color[] orderedPalette = (Color[])CustomPalette.Clone();
-            Array.Sort(orderedPalette, new BrightnessComparer());
-
-            // Apply those changes to the other palettes
-            Color[,] reorderedPalettes = new Color[3, SIZE];
-
-            for (int i = 0; i < SIZE; i++)
-            {
-                int pos = Array.IndexOf(CustomPalette, orderedPalette[i]);
-                for (int j = 0; j < 3; j++)
-                    reorderedPalettes[j, pos] = AltPalettes[j, i];
-            }
-
-            AltPalettes = reorderedPalettes;
-        }
-
         private void updateObjects()
         {
             foreach(CAT_ColourComponent obj in managedObjects)
@@ -148,9 +127,7 @@ namespace PrismCAT
                 Instance = this;
             }
             managedObjects = new List<CAT_ColourComponent>();
-            AltPalettes = new Color[3, SIZE];
-            ReadFromJsonFile();
-            ReorderAltPalettes();
+            LoadPalettes();
         }
 
         /// <summary>
@@ -191,6 +168,18 @@ namespace PrismCAT
             File.WriteAllText(path, JsonUtility.ToJson(customPaletteData, true));
         }
 
+        private void LoadPalettes()
+        {
+            AltPalettes = new Color[3, SIZE];
+            JsonPalettes = new Color[3, 10];
+            ReadFromJsonFile();
+            JsonToAltPalettes();
+            ReorderAltPalettes();
+        }
+
+        /// <summary>
+        /// Reads the palettes defined in the json file and loads them in the array JsonPalettes.
+        /// </summary>
         private void ReadFromJsonFile()
         {
             string rutaArchivo = Application.dataPath + "/PrismCAT/Json/AltPalettes.json";
@@ -198,21 +187,63 @@ namespace PrismCAT
             ColorData colordata = JsonUtility.FromJson<ColorData>(json);
             for(int i = 0; i < colordata.Protanopia.Length; i++)
             {
-                AltPalettes[0,i] = ColorUtility.TryParseHtmlString(colordata.Protanopia[i], out Color parsedColor) ? parsedColor : Color.white;
-                //ProtanopiaPalette[i] = ColorUtility.TryParseHtmlString(colordata.Protanopia[i], out Color parsedColor) ? parsedColor : Color.white;
+                JsonPalettes[0,i] = ColorUtility.TryParseHtmlString(colordata.Protanopia[i], out Color parsedColor) ? parsedColor : Color.white;
             }
             for (int i = 0; i < colordata.Deuteranopia.Length; i++)
             {
-                AltPalettes[1, i] = ColorUtility.TryParseHtmlString(colordata.Deuteranopia[i], out Color parsedColor) ? parsedColor : Color.white;
-                //DeuteranopiaPalette[i] = ColorUtility.TryParseHtmlString(colordata.Deuteranopia[i], out Color parsedColor) ? parsedColor : Color.white;
+                JsonPalettes[1, i] = ColorUtility.TryParseHtmlString(colordata.Deuteranopia[i], out Color parsedColor) ? parsedColor : Color.white;
             }
             for (int i = 0; i < colordata.Tritanopia.Length; i++)
             {
-                AltPalettes[2, i] = ColorUtility.TryParseHtmlString(colordata.Tritanopia[i], out Color parsedColor) ? parsedColor : Color.white;
-                //TritanopiaPalette[i] = ColorUtility.TryParseHtmlString(colordata.Tritanopia[i], out Color parsedColor) ? parsedColor : Color.white;
+                JsonPalettes[2, i] = ColorUtility.TryParseHtmlString(colordata.Tritanopia[i], out Color parsedColor) ? parsedColor : Color.white;
             }
-            //Color colorA = ColorUtility.TryParseHtmlString(prota.A, out Color parsedColor) ? parsedColor : Color.white;
         }
+
+        /// <summary>
+        /// This function copies the colours from JsonPalettes to AltPalettes, considering that the size of AltPalettes may be smaller
+        /// than the size of JsonPalettes.
+        /// </summary>
+        private void JsonToAltPalettes()
+        {
+            if(JsonPalettes.GetLength(1) == SIZE)
+            {
+                AltPalettes = JsonPalettes;
+            }
+            else
+            {
+                float step = (float)10 / SIZE;
+                for(int i = 0; i < SIZE; i++)
+                {
+                    for(int j = 0; j < 3; j++)
+                        AltPalettes[j, i] = JsonPalettes[j, Mathf.FloorToInt(i + step)];
+                }
+            }
+        }
+
+        /// <summary>
+        /// This function reorders the colours in each of the alternate palettes to best match the custom palette in terms of brightness.
+        /// </summary>
+        void ReorderAltPalettes()
+        {
+            // Sort the CustomPalette by brightness
+            Color[] orderedPalette = new Color[SIZE];
+            for (int i = 0; i < SIZE; i++)
+                orderedPalette[i] = CustomPalette[i];
+            Array.Sort(orderedPalette, new BrightnessComparer());
+
+            // Apply those changes to the other palettes
+            Color[,] reorderedPalettes = new Color[3, SIZE];
+
+            for (int i = 0; i < SIZE; i++)
+            {
+                int pos = Array.IndexOf(CustomPalette, orderedPalette[i]);
+                for (int j = 0; j < 3; j++)
+                    reorderedPalettes[j, pos] = AltPalettes[j, i];
+            }
+
+            AltPalettes = reorderedPalettes;
+        }
+
         #endregion
     }
 
