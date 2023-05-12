@@ -9,13 +9,13 @@ namespace PrismCAT
         [SerializeField, Range(0, 9)] int colour;
         //[SerializeField] float colourTransparency;
 
-        private Renderer renderer;
+        private Renderer render;
 
         private new void Start()
         {
             base.Start();
-            renderer = GetComponent<Renderer>();
-            if (renderer == null)
+            render = GetComponent<Renderer>();
+            if (render == null)
                 Debug.LogError("CAT_Object added to object with no Renderer component.");
             UpdateColour();
         }
@@ -39,7 +39,7 @@ namespace PrismCAT
 
         public override void UpdateColour()
         {
-            renderer.material.color = colourManager.GetColour((int)colour);
+            render.material.color = colourManager.GetColour((int)colour);
         }
 
         public override void OnValidateSize(int s)

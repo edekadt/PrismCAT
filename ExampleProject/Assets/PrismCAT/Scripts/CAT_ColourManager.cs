@@ -106,10 +106,15 @@ namespace PrismCAT
         /// Method that changes the current palette to a specific one.
         /// </summary>
         /// <param name="palette">Palettes available: Default, Protanopia, Deuteranopia and Tritanopia </param>
-        public void changePalette(Palette palette)
+        public void ChangePalette(Palette palette)
         {
             currentPalette = palette;
             updateObjects();
+        }
+
+        public Palette GetPalette()
+        {
+            return currentPalette;
         }
 
         public static CAT_ColourManager Instance { get; private set; }
