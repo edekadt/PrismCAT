@@ -6,7 +6,8 @@ namespace PrismCAT
 {
     public class CAT_Image : CAT_ColourComponent
     {
-        [SerializeField] ColourIndex colour = ColourIndex.A;
+        private int size = 10;
+        [SerializeField, Range(0, 9)] int colour;
         //[SerializeField] float colourTransparency;
 
         private Image image;
@@ -22,6 +23,7 @@ namespace PrismCAT
 
         private void OnValidate()
         {
+            colour = Mathf.Clamp(colour, 0, size - 1);
         }
 
         private void OnDestroy()
@@ -31,13 +33,19 @@ namespace PrismCAT
 
         public void setColour(int c)
         {
-            colour = (ColourIndex)c;
+            colour = c;
             UpdateColour();
         }
 
         public override void UpdateColour()
         {
-            image.color = colourManager.GetColour((int)colour);
+            image.color = colourManager.GetColour(colour);
+        }
+
+        public override void OnValidateSize(int s)
+        {
+            size = s;
+            colour = Mathf.Clamp(colour, 0, size - 1);
         }
     }
 

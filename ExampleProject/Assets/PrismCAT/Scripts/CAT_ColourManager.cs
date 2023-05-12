@@ -29,6 +29,7 @@ namespace PrismCAT
         [SerializeField] bool debug = false;
 
         [SerializeField, Range(1, 10)] int SIZE = 10; // Number of colours supported.
+        private int lastSize = 10; // To check if SIZE has changed
         [SerializeField, Range(1, 4)] int numberOfPalettes;
         [SerializeField] Palette currentPalette;
 
@@ -180,6 +181,16 @@ namespace PrismCAT
             File.WriteAllText(path, JsonUtility.ToJson(customPaletteData, true));
 
             updateObjects();
+
+            if(lastSize != SIZE)
+            {
+                lastSize = SIZE;
+                CAT_ColourComponent[] components = FindObjectsOfType<CAT_ColourComponent>();
+                foreach (CAT_ColourComponent comp in components)
+                {
+                    comp.OnValidateSize(SIZE);
+                }
+            }
         }
 
         private void LoadPalettes()

@@ -22,6 +22,8 @@ namespace PrismCAT
         }
 
         abstract public void UpdateColour();
+
+        abstract public void OnValidateSize(int s);
     }
 
     public abstract class CAT_ColourComponentEditor: Editor
