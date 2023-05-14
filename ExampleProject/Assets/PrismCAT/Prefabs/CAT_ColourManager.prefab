@@ -44,10 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1535673c93d72674a9ac3b21e315bb98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debug: 1
+  debug: 0
+  showWarnings: 1
   debugButton: Submit
   SIZE: 10
-  numberOfPalettes: 4
   currentPalette: 0
   CustomPalette:
   - {r: 0, g: 0, b: 0, a: 1}
