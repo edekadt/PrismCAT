@@ -13,6 +13,10 @@ namespace PrismCAT
         protected void Start()
         {
             colourManager = CAT_ColourManager.Instance;
+            if (colourManager == null)
+                Debug.LogError("Error: CAT_ColourComponent instantiated with no CAT_ColourManager in scene." +
+                    " To enable PrismCAT components to work, add the script CAT_ColourManager to an object in the scene" +
+                    " or instantiate the provided prefab of the same name.");
             colourManager.addObject(this);
         }
 
