@@ -34,9 +34,8 @@ namespace PrismCAT
         [Tooltip("Enables edge-case warnings.")]
         [SerializeField] bool showWarnings = true;
 
-        [SerializeField, Range(1, 10)] int SIZE = 10; // Number of colours supported.
-
-        private int lastSize = 10; // To check if SIZE has changed
+        private const int MAXSIZE = 10; // Max number of colours supported.
+        private int SIZE = MAXSIZE; // Number of colours supported.
 
         private const int numberOfPalettes = 4;
 
@@ -181,39 +180,69 @@ namespace PrismCAT
         }
 
         /// <summary>
+        /// Makes sure the CustomPalette length is less than MAXSIZE.
         /// Writes any changes in the palette's colours to CustomPalette.json
         /// </summary>
         private void OnValidate()
         {
-            string path = Application.dataPath + "/PrismCAT/Json/CustomPalette.json";
-            PaletteData customPaletteData = new PaletteData();
-            customPaletteData.Custom = new string[10];
-            int i = 0;
-            foreach (Color c in CustomPalette)
-            {
-                string hex = ColorUtility.ToHtmlStringRGB(c);
-                customPaletteData.Custom[i] = "#" + hex;
-                ++i;
-            }
-            File.WriteAllText(path, JsonUtility.ToJson(customPaletteData, true));
+            Color[] CustomPaletteBackup = LoadCustomPalette();
 
-            if(lastSize != SIZE)
+            if (CustomPalette.Length != SIZE)
             {
-                lastSize = SIZE;
+                if(CustomPalette.Length > MAXSIZE)
+                    Array.Resize(ref CustomPalette, MAXSIZE);
+
+                if (CustomPalette.Length > SIZE)
+                {
+                    for (int i = 0; i < CustomPalette.Length; i++)
+                        CustomPalette[i] = CustomPaletteBackup[i];
+                }
+
+                SIZE = CustomPalette.Length;
                 CAT_ColourComponent[] components = FindObjectsOfType<CAT_ColourComponent>();
                 foreach (CAT_ColourComponent comp in components)
                 {
                     comp.OnValidateSize(SIZE);
                 }
             }
+            else
+            {
+                for (int j = 0; j < SIZE; j++)
+                    CustomPaletteBackup[j] = CustomPalette[j];
+
+                string path = Application.dataPath + "/PrismCAT/Json/CustomPalette.json";
+                PaletteData customPaletteData = new PaletteData();
+                customPaletteData.Custom = new string[MAXSIZE];
+                int i = 0;
+                foreach (Color c in CustomPaletteBackup)
+                {
+                    string hex = ColorUtility.ToHtmlStringRGB(c);
+                    customPaletteData.Custom[i] = "#" + hex;
+                    ++i;
+                }
+                File.WriteAllText(path, JsonUtility.ToJson(customPaletteData, true));
+            }
 
             updateObjects();
         }
 
+        private Color[] LoadCustomPalette()
+        {
+            Color[] colours = new Color[MAXSIZE];
+            string rutaArchivo = Application.dataPath + "/PrismCAT/Json/CustomPalette.json";
+            string json = File.ReadAllText(rutaArchivo);
+            CAT_ColourManager.PaletteData colordata = JsonUtility.FromJson<CAT_ColourManager.PaletteData>(json);
+            for (int i = 0; i < colordata.Custom.Length; i++)
+            {
+                colours[i] = ColorUtility.TryParseHtmlString(colordata.Custom[i], out Color parsedColor) ? parsedColor : Color.white;
+            }
+            return colours;
+        }
+
         private void LoadPalettes()
         {
-            AltPalettes = new Color[3, 10];
-            JsonPalettes = new Color[3, 10];
+            AltPalettes = new Color[3, SIZE];
+            JsonPalettes = new Color[3, MAXSIZE];
             ReadFromJsonFile();
             JsonToAltPalettes();
             ReorderAltPalettes();
@@ -253,7 +282,7 @@ namespace PrismCAT
             }
             else
             {
-                float step = (float)10 / SIZE;
+                float step = (float)MAXSIZE / SIZE;
                 for(int i = 0; i < SIZE; i++)
                 {
                     for(int j = 0; j < 3; j++)
