@@ -11,12 +11,16 @@ namespace PrismCAT
 
         private Renderer render;
 
+        // Initial colour of the object
+        Color baseColour;
+
         private new void Start()
         {
             base.Start();
             render = GetComponent<Renderer>();
             if (render == null)
                 Debug.LogError("CAT_Object added to object with no Renderer component.");
+            baseColour = render.material.color;
             UpdateColour();
         }
 
@@ -46,7 +50,6 @@ namespace PrismCAT
         public override void OnValidateSize(int s)
         {
             size = s;
-            colour = Mathf.Clamp(colour, 0, size - 1);
         }
     }
 
