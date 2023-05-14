@@ -25,6 +25,7 @@ public class CAT_Material : MonoBehaviour
         Color matColor = mat.color;
         float alpha = matColor.a * colorWithTransparency.a;
         Color newColor = colorWithTransparency * alpha + matColor * (1 - alpha);
+        newColor.a = matColor.a;
         mat.color = newColor;
     }
 }
