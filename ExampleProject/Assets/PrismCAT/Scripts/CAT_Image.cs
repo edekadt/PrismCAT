@@ -28,6 +28,8 @@ namespace PrismCAT
         private void OnValidate()
         {
             colour = Mathf.Clamp(colour, 0, size - 1);
+            UpdateColour();
+            initialColour = colour;
         }
 
         private void OnDestroy()
@@ -43,7 +45,8 @@ namespace PrismCAT
 
         public override void UpdateColour()
         {
-            image.color = colourManager.GetColour(colour);
+            if (colourManager != null)
+                image.color = colourManager.GetColour(colour);
         }
 
         public override void OnValidateSize(int s)
