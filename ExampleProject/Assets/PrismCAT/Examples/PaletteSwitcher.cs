@@ -4,7 +4,7 @@ using UnityEngine;
 using PrismCAT;
 using UnityEngine.UI;
 
-public class CAT_ButtonText : MonoBehaviour
+public class PaletteSwitcher : MonoBehaviour
 {
     [SerializeField]
     private Text texto;

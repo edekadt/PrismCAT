@@ -264,6 +264,10 @@ PrefabInstance:
       propertyPath: colour
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: -9064447558115975823, guid: 8d931b3fb82717949a490ba2479926c4, type: 3}
+      propertyPath: renderTransparent
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 128935683, guid: 8d931b3fb82717949a490ba2479926c4, type: 3}
       propertyPath: m_Name
       value: Rock1
@@ -1453,7 +1457,6 @@ MonoBehaviour:
   debug: 1
   debugButton: Submit
   showWarnings: 0
-  SIZE: 10
   currentPalette: 0
   CustomPalette:
   - {r: 0, g: 0, b: 0, a: 1}
@@ -1958,6 +1961,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 688658855}
     m_Modifications:
+    - target: {fileID: -9064447558115975823, guid: 8d931b3fb82717949a490ba2479926c4, type: 3}
+      propertyPath: colourTransparency
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 128935683, guid: 8d931b3fb82717949a490ba2479926c4, type: 3}
       propertyPath: m_Name
       value: Rock1 (1)
