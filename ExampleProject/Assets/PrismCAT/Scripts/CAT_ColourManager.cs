@@ -29,11 +29,11 @@ namespace PrismCAT
         [Tooltip("Enables switching between palettes at a single button press.")]
         [SerializeField] bool debug = false;
 
-        [Tooltip("Enables edge-case warnings.")]
-        [SerializeField] bool showWarnings = true;
-
         [Tooltip("Input axis that switches between colour palettes cyclically.")]
         [SerializeField] string debugButton;
+
+        [Tooltip("Enables edge-case warnings.")]
+        [SerializeField] bool showWarnings = true;
 
         [SerializeField, Range(1, 10)] int SIZE = 10; // Number of colours supported.
 

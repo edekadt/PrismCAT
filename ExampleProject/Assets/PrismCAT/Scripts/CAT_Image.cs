@@ -15,12 +15,17 @@ namespace PrismCAT
 
         private Image image;
         
+        // Initial colour of the image, over which the indexed colour is applied at the desired transparency. 
+        Color baseColour;
+        
         private new void Start()
         {
             base.Start();
             image = GetComponent<Image>();
             if (image == null)
                 Debug.LogError("CAT_Image added to object with no Image component.");
+            baseColour = image.color;
+
             UpdateColour();
         }
 
@@ -44,9 +49,9 @@ namespace PrismCAT
         public override void UpdateColour()
         {
             if (colourManager != null)
-                image.color = colourManager.GetColour(colour) * (1-colourTransparency);
+                image.color = Color.Lerp(colourManager.GetColour(colour), baseColour, colourTransparency);
         }
-
+        
         public override void OnValidateSize(int s)
         {
             size = s;
