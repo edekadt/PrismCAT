@@ -6,9 +6,6 @@ namespace PrismCAT
 {
     public class CAT_Object : CAT_ColourComponent
     {
-        private int size = 10;
-        [SerializeField, Range(0, 9)] int colour;
-
         private Renderer render;
 
         // Initial colour of the object
@@ -24,11 +21,6 @@ namespace PrismCAT
             UpdateColour();
         }
 
-        private void OnValidate()
-        {
-            colour = Mathf.Clamp(colour, 0, size - 1);
-            UpdateColour();
-        }
 
         private void OnDestroy()
         {
@@ -45,11 +37,6 @@ namespace PrismCAT
         {
             if (colourManager != null)
                 render.material.color = colourManager.GetColour((int)colour);
-        }
-
-        public override void OnValidateSize(int s)
-        {
-            size = s;
         }
     }
 
@@ -74,7 +61,9 @@ namespace PrismCAT
             EditorGUILayout.PropertyField(colour);
             serializedObject.ApplyModifiedProperties();
 
-            EditorGUILayout.ColorField(LoadCustomPalette()[colour.intValue]);
+            GUI.enabled = false;
+            EditorGUILayout.ColorField(GUIContent.none, LoadCustomPalette()[colour.intValue], false, true, false);
+            GUI.enabled = true;
         }
     }
 }

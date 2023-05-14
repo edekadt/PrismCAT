@@ -6,9 +6,6 @@ namespace PrismCAT
 {
     public class CAT_Image : CAT_ColourComponent
     {
-        private int size = 10;
-        [SerializeField, Range(0, 9)] int colour;
-        
         [Tooltip ("Transparency at which the indexed colour is applied over the base image. \n" +
             "At 0, colour is applied in full opacity. At 1, overlayed colour is fully transparent.")]
         [SerializeField, Range(0f, 1f)] float colourTransparency;
@@ -29,11 +26,6 @@ namespace PrismCAT
             UpdateColour();
         }
 
-        private void OnValidate()
-        {
-            colour = Mathf.Clamp(colour, 0, size - 1);
-            UpdateColour();
-        }
 
         private void OnDestroy()
         {
@@ -50,11 +42,6 @@ namespace PrismCAT
         {
             if (colourManager != null)
                 image.color = Color.Lerp(colourManager.GetColour(colour), baseColour, colourTransparency);
-        }
-        
-        public override void OnValidateSize(int s)
-        {
-            size = s;
         }
     }
 

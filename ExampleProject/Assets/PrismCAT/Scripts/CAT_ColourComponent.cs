@@ -6,6 +6,9 @@ namespace PrismCAT
 {
     public abstract class CAT_ColourComponent : MonoBehaviour
     {
+        protected int size = 10;
+
+        [SerializeField, Range(0, 9)] protected int colour;
         public enum ColourIndex { A, B, C, D, E, F, G, H, I, J };
 
         protected CAT_ColourManager colourManager;
@@ -27,7 +30,15 @@ namespace PrismCAT
 
         abstract public void UpdateColour();
 
-        abstract public void OnValidateSize(int s);
+        private void OnValidate()
+        {
+            colour = Mathf.Clamp(colour, 0, size - 1);
+            UpdateColour();
+        }
+        public void OnValidateSize(int s)
+        {
+            size = s;
+        }
     }
 
     public abstract class CAT_ColourComponentEditor: Editor

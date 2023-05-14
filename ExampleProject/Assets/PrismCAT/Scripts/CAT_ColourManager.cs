@@ -6,7 +6,6 @@ using System.IO;
 
 namespace PrismCAT
 {
-
     public class CAT_ColourManager : MonoBehaviour
     {
         [System.Serializable]

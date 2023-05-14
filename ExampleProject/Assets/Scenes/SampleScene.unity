@@ -1214,6 +1214,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 688658855}
     m_Modifications:
+    - target: {fileID: -9064447558115975823, guid: 8d931b3fb82717949a490ba2479926c4, type: 3}
+      propertyPath: colour
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 128935683, guid: 8d931b3fb82717949a490ba2479926c4, type: 3}
       propertyPath: m_Name
       value: Rock1 (2)
@@ -8060,6 +8064,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 176203eec37734f4bb08f185af114af3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  colour: 0
 --- !u!1001 &2029692833
 PrefabInstance:
   m_ObjectHideFlags: 0
