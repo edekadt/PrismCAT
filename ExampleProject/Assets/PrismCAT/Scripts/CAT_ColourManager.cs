@@ -190,7 +190,11 @@ namespace PrismCAT
             if (CustomPalette.Length != SIZE)
             {
                 if(CustomPalette.Length > MAXSIZE)
+                {
+                    if (showWarnings)
+                        Debug.LogWarning("Palette size is limited to 10.");
                     Array.Resize(ref CustomPalette, MAXSIZE);
+                }
 
                 if (CustomPalette.Length > SIZE)
                 {
