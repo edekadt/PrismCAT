@@ -1447,7 +1447,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debug: 1
-  showWarnings: 1
   debugButton: Submit
   showWarnings: 0
   SIZE: 10
@@ -2138,7 +2137,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -180, y: 125}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1404967086
 MonoBehaviour:
@@ -2234,7 +2233,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7db51a93602defe42be10f3bcfb2b43b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colour: 6
+  colour: 0
   colourTransparency: 0
 --- !u!1001 &1413255219
 PrefabInstance:
@@ -8061,7 +8060,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 176203eec37734f4bb08f185af114af3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colorWithTransparency: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1001 &2029692833
 PrefabInstance:
   m_ObjectHideFlags: 0
