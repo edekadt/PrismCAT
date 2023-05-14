@@ -14,7 +14,7 @@ namespace PrismCAT
         [SerializeField, Range(0f, 1f)] float colourTransparency;
 
         private Image image;
-        private int initialColour;
+        
         private new void Start()
         {
             base.Start();
@@ -22,14 +22,12 @@ namespace PrismCAT
             if (image == null)
                 Debug.LogError("CAT_Image added to object with no Image component.");
             UpdateColour();
-            initialColour = colour;
         }
 
         private void OnValidate()
         {
             colour = Mathf.Clamp(colour, 0, size - 1);
             UpdateColour();
-            initialColour = colour;
         }
 
         private void OnDestroy()
@@ -46,13 +44,12 @@ namespace PrismCAT
         public override void UpdateColour()
         {
             if (colourManager != null)
-                image.color = colourManager.GetColour(colour);
+                image.color = colourManager.GetColour(colour) * (1-colourTransparency);
         }
 
         public override void OnValidateSize(int s)
         {
             size = s;
-            colour = Mathf.Clamp(initialColour, 0, size - 1);
         }
     }
 

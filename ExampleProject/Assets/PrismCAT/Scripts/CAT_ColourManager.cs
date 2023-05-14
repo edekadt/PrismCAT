@@ -29,6 +29,9 @@ namespace PrismCAT
         [Tooltip("Enables switching between palettes at a single button press.")]
         [SerializeField] bool debug = false;
 
+        [Tooltip("Enables edge-case warnings.")]
+        [SerializeField] bool showWarnings = true;
+
         [Tooltip("Input axis that switches between colour palettes cyclically.")]
         [SerializeField] string debugButton;
 
@@ -80,23 +83,28 @@ namespace PrismCAT
 
         /// <summary>
         /// Returns the colour corresponding to the passed index based on the current Colourblind setting.
+        /// If the index is greater than the number of colours in use (SIZE), the returned colour is equal 
         /// </summary>
         public Color GetColour(int index)
         {
+            int clampedIndex = Math.Clamp(index, 0, SIZE - 1);
+            if (clampedIndex != index)
+                Debug.LogWarning("Requested colour index is greater than number of colours in use. " +
+                    "The highest indexed colour within limits has been returned instead.");
             Color colour;
             switch (currentPalette)
             {
                 case Palette.Default:
-                    colour = CustomPalette[index];
+                    colour = CustomPalette[clampedIndex];
                     break;
                 case Palette.Protanopia:
-                    colour = AltPalettes[0, index];
+                    colour = AltPalettes[0, clampedIndex];
                     break;
                 case Palette.Deuteranopia:
-                    colour = AltPalettes[1, index];
+                    colour = AltPalettes[1, clampedIndex];
                     break;
                 case Palette.Tritanopia:
-                    colour = AltPalettes[2, index];
+                    colour = AltPalettes[2, clampedIndex];
                     break;
                 default:
                     Debug.LogError("Unknown colour palette active.");
