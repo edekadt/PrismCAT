@@ -4,7 +4,7 @@ using UnityEngine;
 using PrismCAT;
 using UnityEngine.UI;
 
-public class ButtonText : MonoBehaviour
+public class CAT_ButtonText : MonoBehaviour
 {
     [SerializeField]
     private Text texto;
@@ -26,6 +26,9 @@ public class ButtonText : MonoBehaviour
         ChangeText();
     }
 
+    /// <summary>
+    /// Change the text from the button
+    /// </summary>
     private void ChangeText()
     {
         int value = (int)CAT_ColourManager.Instance.GetPalette();
@@ -33,6 +36,9 @@ public class ButtonText : MonoBehaviour
         texto.text = enumName.ToString();
     }
 
+    /// <summary>
+    /// Change the colour palette 
+    /// </summary>
     public void OnButtonClick()
     {
         if (!CAT_ColourManager.Instance) return;

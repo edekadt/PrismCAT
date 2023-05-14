@@ -96,9 +96,7 @@ namespace PrismCAT
                     colour = Color.black;
                     break;
             }
-            //colour.r *= index / 10f;
-            //colour.g *= index / 10f;
-            //colour.b *= index / 10f;
+
             return colour;
         }
 

@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,7 +8,6 @@ namespace PrismCAT
     {
         private int size = 10;
         [SerializeField, Range(0, 9)] int colour;
-        //[SerializeField] float colourTransparency;
 
         private Renderer render;
 
@@ -23,7 +23,6 @@ namespace PrismCAT
         private void OnValidate()
         {
             colour = Mathf.Clamp(colour, 0, size - 1);
-            //gameObject.GetComponent<MeshRenderer>().material.color = colourManager.GetColour((int)colour);
         }
 
         private void OnDestroy()
@@ -46,6 +45,31 @@ namespace PrismCAT
         {
             size = s;
             colour = Mathf.Clamp(colour, 0, size - 1);
+        }
+    }
+
+    [CustomEditor(typeof(CAT_Object))]
+    [CanEditMultipleObjects]
+    public class CAT_Object_Editor : CAT_ColourComponentEditor
+    {
+        SerializedProperty colour;
+
+        void OnEnable()
+        {
+            colour = serializedObject.FindProperty("colour");
+        }
+
+        /// <summary>
+        /// Creates a slider that allows the developer to change 
+        /// the number of colors
+        /// </summary>
+        public override void OnInspectorGUI()
+        {
+            serializedObject.Update();
+            EditorGUILayout.PropertyField(colour);
+            serializedObject.ApplyModifiedProperties();
+
+            EditorGUILayout.ColorField(LoadCustomPalette()[colour.intValue]);
         }
     }
 }

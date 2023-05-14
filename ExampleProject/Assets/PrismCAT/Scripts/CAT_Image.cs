@@ -8,7 +8,6 @@ namespace PrismCAT
     {
         private int size = 10;
         [SerializeField, Range(0, 9)] int colour;
-        //[SerializeField] float colourTransparency;
 
         private Image image;
 
@@ -60,6 +59,10 @@ namespace PrismCAT
             colour = serializedObject.FindProperty("colour");
         }
 
+        /// <summary>
+        /// Creates a slider that allows the developer to change 
+        /// the number of colors
+        /// </summary>
         public override void OnInspectorGUI()
         {
             serializedObject.Update();

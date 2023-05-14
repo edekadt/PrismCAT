@@ -55,6 +55,9 @@ public class CAT_CameraColorFilter : MonoBehaviour
         material.SetColor("_B", RGB[0, 2]);
     }
 
+    /// <summary>
+    /// Change the color filter from the camera using a shader
+    /// </summary>
     private void OnRenderImage(RenderTexture source, RenderTexture destination)
     {
         if (colorBlind == ColorBlind.Normal) {
