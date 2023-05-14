@@ -82,7 +82,9 @@ namespace PrismCAT
             EditorGUILayout.PropertyField(transparency);
             serializedObject.ApplyModifiedProperties();
 
-            EditorGUILayout.ColorField(LoadCustomPalette()[colour.intValue]);
+            GUI.enabled = false;
+            EditorGUILayout.ColorField(GUIContent.none, LoadCustomPalette()[colour.intValue], false, true, false);
+            GUI.enabled = true;
         }
     }
 }
