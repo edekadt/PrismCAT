@@ -179,6 +179,7 @@ namespace PrismCAT
             {
                 string hex = ColorUtility.ToHtmlStringRGB(c);
                 customPaletteData.Custom[i] = "#" + hex;
+                Debug.Log(customPaletteData.Custom[i]);
                 ++i;
             }
             File.WriteAllText(path, JsonUtility.ToJson(customPaletteData, true));
@@ -198,7 +199,7 @@ namespace PrismCAT
 
         private void LoadPalettes()
         {
-            AltPalettes = new Color[3, SIZE];
+            AltPalettes = new Color[3, 10];
             JsonPalettes = new Color[3, 10];
             ReadFromJsonFile();
             JsonToAltPalettes();

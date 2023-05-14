@@ -10,7 +10,7 @@ namespace PrismCAT
         [SerializeField, Range(0, 9)] int colour;
 
         private Image image;
-
+        private int initialColour;
         private new void Start()
         {
             base.Start();
@@ -18,6 +18,7 @@ namespace PrismCAT
             if (image == null)
                 Debug.LogError("CAT_Image added to object with no Image component.");
             UpdateColour();
+            initialColour = colour;
         }
 
         private void OnValidate()
@@ -44,7 +45,7 @@ namespace PrismCAT
         public override void OnValidateSize(int s)
         {
             size = s;
-            colour = Mathf.Clamp(colour, 0, size - 1);
+            colour = Mathf.Clamp(initialColour, 0, size - 1);
         }
     }
 
