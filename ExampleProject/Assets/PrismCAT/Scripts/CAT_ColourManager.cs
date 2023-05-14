@@ -23,7 +23,7 @@ namespace PrismCAT
             public string[] Custom;
         }
 
-        public enum Palette { Default, Protanopia, Deuteranopia, Tritanopia };
+        public enum Palette { Custom, Protanopia, Deuteranopia, Tritanopia };
 
         #region attributes
         [Tooltip("Enables switching between palettes at a single button press.")]
@@ -94,7 +94,7 @@ namespace PrismCAT
             Color colour;
             switch (currentPalette)
             {
-                case Palette.Default:
+                case Palette.Custom:
                     colour = CustomPalette[clampedIndex];
                     break;
                 case Palette.Protanopia:
@@ -118,7 +118,7 @@ namespace PrismCAT
         /// <summary>
         /// Method that changes the current palette to a specific one.
         /// </summary>
-        /// <param name="palette">Palettes available: Default, Protanopia, Deuteranopia and Tritanopia </param>
+        /// <param name="palette">Palettes available: Custom, Protanopia, Deuteranopia and Tritanopia </param>
         public void ChangePalette(Palette palette)
         {
             currentPalette = palette;
@@ -194,7 +194,6 @@ namespace PrismCAT
             {
                 string hex = ColorUtility.ToHtmlStringRGB(c);
                 customPaletteData.Custom[i] = "#" + hex;
-                Debug.Log(customPaletteData.Custom[i]);
                 ++i;
             }
             File.WriteAllText(path, JsonUtility.ToJson(customPaletteData, true));
