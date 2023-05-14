@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CAT_AddImageColour : MonoBehaviour
+public class CAT_Material : MonoBehaviour
 {
     public Color colorWithTransparency;
     // Start is called before the first frame update
