@@ -26,11 +26,18 @@ namespace PrismCAT
         public enum Palette { Default, Protanopia, Deuteranopia, Tritanopia };
 
         #region attributes
+        [Tooltip("Enables switching between palettes at a single button press.")]
         [SerializeField] bool debug = false;
 
+        [Tooltip("Input axis that switches between colour palettes cyclically.")]
+        [SerializeField] string debugButton;
+
         [SerializeField, Range(1, 10)] int SIZE = 10; // Number of colours supported.
+
         private int lastSize = 10; // To check if SIZE has changed
-        [SerializeField, Range(1, 4)] int numberOfPalettes;
+
+        private const int numberOfPalettes = 4;
+
         [SerializeField] Palette currentPalette;
 
         [Tooltip("Palette of up to 10 colours that PrismCAT will replace if colourblind settings are enabled.\n" +
@@ -159,7 +166,7 @@ namespace PrismCAT
 
         private void Update()
         {
-            if (debug && Input.GetKeyDown(KeyCode.P))
+            if (debug && Input.GetButtonDown(debugButton))
             {
                 currentPalette = (Palette)((int)(currentPalette + 1) % numberOfPalettes);
                 updateObjects();
