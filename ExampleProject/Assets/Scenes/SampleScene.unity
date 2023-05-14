@@ -1447,6 +1447,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debug: 1
+  showWarnings: 1
   debugButton: Submit
   showWarnings: 0
   SIZE: 10
