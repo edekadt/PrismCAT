@@ -88,7 +88,7 @@ namespace PrismCAT
         public Color GetColour(int index)
         {
             int clampedIndex = Math.Clamp(index, 0, SIZE - 1);
-            if (clampedIndex != index)
+            if (showWarnings && clampedIndex != index)
                 Debug.LogWarning("Requested colour index is greater than number of colours in use. " +
                     "The highest indexed colour within limits has been returned instead.");
             Color colour;
