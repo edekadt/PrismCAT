@@ -10,7 +10,7 @@ public enum ColorBlind
     Tritanopia = 3
 }
 
-public class CAT_CameraColorFilter : MonoBehaviour
+public class CAT_CameraColourFilter : MonoBehaviour
 {
     private Material material;
     private ColorBlind previousColor;
